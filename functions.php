@@ -23,8 +23,10 @@ add_action( 'wp_enqueue_scripts', 'tailpress_enqueue_scripts' );
  */
 function tailpress_get_mix_compiled_asset_url( $path ) {
 	$path                = '/' . $path;
-	$stylesheet_dir_uri  = get_stylesheet_directory_uri();
-	$stylesheet_dir_path = get_stylesheet_directory();
+    $stylesheet_dir_path = get_stylesheet_directory();
+    $stylesheet_dir_uri  = ! file_exists( $stylesheet_dir_path . '/hot' )
+        ? get_stylesheet_directory_uri()
+        : file_get_contents( $stylesheet_dir_path . '/hot' );
 
 	if ( ! file_exists( $stylesheet_dir_path . '/mix-manifest.json' ) ) {
 		return $stylesheet_dir_uri . $path;
